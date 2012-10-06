@@ -4,8 +4,10 @@ Created on Oct 2, 2012
 @author: virup
 '''
 import xml.etree.cElementTree as ET
-
+import haversine
 INVALID_LOC = -200
+EARTH_RADIUS = 6367 
+
 
 def read_data():
     tree = ET.parse('map.osm')
@@ -30,9 +32,23 @@ def read_data():
             if('name' ==  k):
                 print(tag.get('v'))
 
+        length = 0
+        firstNode = True;
+        earlierPos = [0,0]
+
         for nodeRef in child.getiterator('nd'):
             internalNodeID = nodeRef.get('ref')
             position = nodePosMap.get(internalNodeID, INVALID_LOC)
+            if firstNode == True:
+                earlierPos = position
+                firstNode = False
+            else:
+                x1 = float(earlierPos[0])
+                y1 = float(earlierPos[1])
+                x2 = float(position[0])
+                y2 = float(position[1])
+                length = length + haversine.distance([x1,y1], [x2,y2])
+        print(length)
 
 if __name__ == '__main__':
     read_data()
