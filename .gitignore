@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.pyc
+*.swp
 
 # Compiled Dynamic libraries
 *.so
@@ -15,3 +16,4 @@
 
 # Files
 .DS_Store
+__*

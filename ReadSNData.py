@@ -6,7 +6,7 @@ Created on Oct 2, 2012
 import xml.etree.cElementTree as ET
 import haversine
 INVALID_LOC = -200
-EARTH_RADIUS = 6367 
+EARTH_RADIUS = 6367
 
 
 def read_data():
@@ -29,7 +29,7 @@ def read_data():
         print ("WayID  = "+ wayID)
         for tag in child.getiterator('tag'):
             k = tag.get('k')
-            if('name' ==  k):
+            if('addr:street' ==  k):
                 print(tag.get('v'))
 
         length = 0
