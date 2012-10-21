@@ -1,0 +1,5 @@
+snet ::= vchannel:Channel+ vjunction:Junction+;
+Channel ::= id_attr:int name:char+ lenght:double vSegment:Segment+ vJunctionPtr:&Junction;
+Segment ::= startPt:Point endPt:Point;
+Point ::= lat:double long:double;
+Junction ::= id:int location:Point intChannels:int+ intChannelPtr:&Channel;
