@@ -52,7 +52,25 @@ void snet::snetImpl::readNetworkDataFromFile(string filename, store)
 
 }
 
-double snet::snetImpl::length(string name)
+double snet::snetImpl::length(string name, iBlob* store)
 {
-    int noOfChannels = 
+   Path channelPath = t.createPath("snet.vchannel", store);
+   int noOfChannels = channelPath.count();
+   for(int i =0;i < noOfChannels; i++)
+   {
+       Path channel = channelPath + "[" + i + "]";
+       char *name;
+       int size;
+       Path channelName = channel + "name";
+       channelName.read(name, size);
+       if(strncmp(name.c_str(), name, size) != 0)
+           continue;
+       else
+       {
+           Path channelLength = channel + "length";
+           return channelLength.read();
+       }
+
+    return -1;
+   }
 }

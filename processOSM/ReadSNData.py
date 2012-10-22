@@ -90,13 +90,14 @@ def countData():
     datafile = open('networkdata', 'w')
     for i in wayMap:
         #print (i, wayMap[i][0], len(wayMap[i][1]), wayMap[i][2], wayMap[i][3])
-        strData = "{0},{1},{2},{3},{4}\n".format(i, wayMap[i][0], len(wayMap[i][1]), wayMap[i][2], wayMap[i][3])
+        strData = "{0},{1},{2},{3},{4},\n".format(i, wayMap[i][0],wayMap[i][2],
+                wayMap[i][3],len(wayMap[i][1]))
         datafile.write (strData)
     datafile.close()
     print(" =======================")
     for i in junctionMap:
-        #print(i, junctionMap[i][0], junctionMap[i][1])
-        pass
+        print(i, junctionMap[i][0], junctionMap[i][1])
+        
 
 def main():
     read_data()
