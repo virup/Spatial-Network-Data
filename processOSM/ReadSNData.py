@@ -94,10 +94,16 @@ def countData():
                 wayMap[i][3],len(wayMap[i][1]))
         datafile.write (strData)
     datafile.close()
+
+    junctionFile = open('junctiondata', 'w')
     print(" =======================")
     for i in junctionMap:
         print(i, junctionMap[i][0], junctionMap[i][1])
-        
+        strData = "{0},{1},{2},{3},{4},\n".format(i, junctionMap[i][0],
+                junctionMap[i][1], nodePosMap[junctionMap[i][2]][0],
+                nodePosMap[junctionMap[i][2]][1])
+        junctionFile.write(strData)
+    junctionFile.close()
 
 def main():
     read_data()
