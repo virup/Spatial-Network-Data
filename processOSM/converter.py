@@ -16,7 +16,7 @@ posMap = {} # segment -> name
 junctionMap = {}
 
 def read_data():
-    tree = ET.parse('map.osm.xml')
+    tree = ET.parse('map.osm')
     root = tree.getroot()
 
     # Get all nodes
@@ -87,12 +87,18 @@ def read_data():
 
 def countData():
     print("No of ways = " + str(len(wayMap)))
+    length = 0
     datafile = open('networkdata', 'w')
     for i in wayMap:
         #print (i, wayMap[i][0], len(wayMap[i][1]), wayMap[i][2], wayMap[i][3])
         strData = "{0},{1},{2},{3},{4},\n".format(i, wayMap[i][0],wayMap[i][2],
                 wayMap[i][3],len(wayMap[i][1]))
+        length = length + wayMap[i][2]
         datafile.write (strData)
+        for segment in wayMap[i][1]:
+            strData = "{0}, {1}, {2}, {3},\n".format(segment[0], segment[1],
+                    segment[2], segment[3])
+            datafile.write(strData)
     datafile.close()
 
     junctionFile = open('junctiondata', 'w')
@@ -104,6 +110,8 @@ def countData():
                 nodePosMap[junctionMap[i][2]][1])
         junctionFile.write(strData)
     junctionFile.close()
+    print("Total length = ")
+    print (length)
 
 def main():
     read_data()

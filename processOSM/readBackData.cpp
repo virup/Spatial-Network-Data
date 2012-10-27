@@ -33,6 +33,7 @@ struct point
 
 struct segment
 {
+    public:
     point left;
     point right;
 
@@ -43,6 +44,11 @@ struct segment
     segment(point l, point r):left(l), right(r)
     {
     }
+
+    void print()
+    {
+        cout<<"("<<left.latitude<<","<<left.longitude<<")  ("<<right.latitude<<","<<right.longitude<<")  "<<endl;
+    }
 };
 
 struct channel
@@ -52,7 +58,7 @@ struct channel
     double channelLength;
     string channelType;
     int noOfSegments;
-    vector<segment> segments;
+    vector<segment*> *segments;
 };
 
 struct junction
@@ -81,9 +87,22 @@ vector<struct channel *> *readChannel(string filename)
         file.getline(tempValue, MAXLENGTH,',');c->channelID = atoi(tempValue);
         file.getline(tempValue,MAXLENGTH, ',');c->channelName = tempValue;
         file.getline(tempValue, MAXLENGTH,',');c->channelLength = atof(tempValue);
-        cout<<c->channelLength<<endl;
+        cout<<"LEngth = " <<c->channelLength<<endl;
         file.getline(tempValue, MAXLENGTH,',');c->channelType = tempValue;
         file.getline(tempValue, MAXLENGTH,',');c->noOfSegments = atoi(tempValue);
+
+        c->segments = new vector<segment *>;
+
+        for(int i =0; i < c->noOfSegments; i++)
+        {
+            file.getline(tempValue, MAXLENGTH,',');double latitude1 = atof(tempValue);
+            file.getline(tempValue, MAXLENGTH,',');double longitude1 = atof(tempValue);
+            file.getline(tempValue, MAXLENGTH,',');double latitude2 = atof(tempValue);
+            file.getline(tempValue, MAXLENGTH,',');double longitude2 = atof(tempValue);
+            segment *s = new segment(latitude1, longitude1, latitude2, longitude2);
+            c->segments->push_back(s);
+        }
+
         channelList->push_back(c);
     }
     file.close();
@@ -122,14 +141,21 @@ void printData(vector<struct channel *> network, vector<junction *> junctionList
     for(int i =0 ; i < network.size(); i++)
     {
         struct channel *c = network[i];
-        cout<<c->channelID<<", "<<c->channelName<<", "<<c->channelLength<<", "<<c->channelType<<", "<<c->noOfSegments<<endl;
+        //cout<<c->channelID<<", "<<c->channelName<<", "<<c->channelLength<<", "<<c->channelType<<", "<<c->noOfSegments<<endl;
+        for(int j = 0; j < c->noOfSegments; j++)
+        {
+            vector<segment *> slist = *c->segments;
+            segment *s = slist[j];
+            s->print();
+        }
+        cout<<"======="<<endl;
     }
 
 
     for(int i = 0; i < junctionList.size(); i++)
     {
         junction *j = junctionList[i];
-        cout<<j->junctionID<<", "<<j->channel1ID<<", "<<j->channel2ID<<", "<<j->junctionLocation.latitude<<","<<j->junctionLocation.longitude<<endl;
+        //cout<<j->junctionID<<", "<<j->channel1ID<<", "<<j->channel2ID<<", "<<j->junctionLocation.latitude<<","<<j->junctionLocation.longitude<<endl;
     }
 }
 
@@ -139,8 +165,5 @@ int main()
     vector<struct channel *>  *channelList = readChannel("networkdata");
     cout<<"vector size = "<<channelList->size();
     vector<junction *> *junctionList = readJunction("junctiondata");
-    printData(*channelList, *junctionList);
+    //printData(*channelList, *junctionList);
 }
-
-
-

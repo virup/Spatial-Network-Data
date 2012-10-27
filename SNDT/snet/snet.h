@@ -12,7 +12,7 @@ class snet:public UDT
     public:
         snet();
         void readNetworkDataFromFile(string filename);
-        snet getChannel(string name);
+        double getChannelLength(string name);
         double length();
         void print();
         ~snet();
